@@ -1,13 +1,13 @@
 #ifndef PSTR_H
 #define PSTR_H
-
+//Isso aqui é basicamente duas posições, uma final e uma inicial. Pra pegar um pedaço de uma string
 
 class pstr
 {
     public:
-    pstr();
-    int ini;
-    int fin;
+    pstr();//N faz nada
+    int ini;//Posição inicial
+    int fin;//Posição final
     protected:
 
     private:
