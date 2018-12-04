@@ -8,38 +8,63 @@
 #include <iostream>
 #include <cstdlib>
 using namespace std;
+
+//Construtor que coloca nome
 func::func(string nome):name(nome){}
+
+//Construtor q n faz nada
 func::func(){}
+
+//Setar o bool q eu não sei pra q existe
 func::setVai(bool b){podi=b;}
+
+//Pegar as entradas
 ncompl* func::getIns(){return ins;}
+
+//Pegar o bool q eu não sei pra q existe
 bool func::getPodi(){return podi;}
+
+//Pegar o nome
 std::string func::getName(){return name;}
+
+//Pegar a saída
 ncompl func::getOut(){return *out;}
+
+//Pegar a hierarquia da função
 int func::getHie(){return hie;}
+
+//Pegar o número total de funções dentro da função
 int func::getNins(){return nins;}
+
+//Setar as entradas da função
 func::setIns(ncompl*in){ins=in;}
+
+//Setar a hierarquia da função
 func::setHie(int hi){hie=hi;}
+
+//Pegar um pedaço de array de números complexos, do array arrg, do pri ao ult.
 ncompl* func::arrfromto(ncompl*arrg,int pri,int ult){
     int i;
     ncompl*ans=new ncompl[ult-pri+1];
     for(i=0;i<=ult-pri;i++)ans[i]=arrg[pri+i];
     return ans;
     }
+
+//A função que faz a saída da função com base nas entradas!
 func::Magic(){
     int i;
-if(!name.compare("rec")){
-        if(nins!=2){cout<<"ERRO:N�mero de argumentos incorreto!"<<endl;exit(-1);}
+if(!name.compare("rec")){//Retangular, devolve um número complexo com base no x e y especificados
+        if(nins!=2){cout<<"ERRO:Número de argumentos incorreto!"<<endl;exit(-1);}
         out->setc(ins[0].getInfo(true,true),ins[1].getInfo(true,true),false);
-//if(ins[0].getInfo(true,true)==-83&&ins[1].getInfo(true,true)==0)
-//cout<<ins[0].getInfo(true,true)<<"    "<<ins[1].getInfo(true,true)<<"    "<<out->getInfo(true,true)<<"    "<<out->getInfo(true,false)<<endl;
-
 }
-else if(!name.compare("pol")){
-    if(nins!=2){cout<<"ERRO:N�mero de argumentos incorreto!"<<endl;exit(-1);}
+    
+else if(!name.compare("pol")){//Polar, devolve um número complexo com base num argumento e num ângulo
+    if(nins!=2){cout<<"ERRO:Número de argumentos incorreto!"<<endl;exit(-1);}
     out->setc(ins[0].getInfo(true,true),ins[1].getInfo(true,true),true);
-}//pol(1.414213562373,45)
-else if(!name.compare("add")){
-    if(nins==0){cout<<"ERRO:N�mero de argumentos imposs�vel!"<<endl;exit(-1);}
+}
+    
+else if(!name.compare("add")){//Soma todos os números complexos
+    if(nins==0){cout<<"ERRO:Número de argumentos impossível!"<<endl;exit(-1);}
     int i;
     double ansr=0,ansi=0;
     for(i=0;i<nins;i++){
@@ -47,12 +72,10 @@ else if(!name.compare("add")){
         ansi+=ins[i].getInfo(true,false);
     }
     out->setc(ansr,ansi,false);
-
-//cout<<ins[0].getInfo(true,true)<<"    "<<ins[1].getInfo(true,true)<<"    "<<out->getInfo(true,true)<<"    "<<out->getInfo(true,false)<<"    "<<ansr<<"     "<<ansi<<endl;
-
 }
-else if(!name.compare("sub")){
-    if(nins==1||nins==0){cout<<"ERRO:N�mero de argumentos imposs�vel!"<<endl;exit(-1);}
+    
+else if(!name.compare("sub")){//Subrai todos do primeiro
+    if(nins==1||nins==0){cout<<"ERRO:Número de argumentos impossível!"<<endl;exit(-1);}
     int i;
     double ansr=ins[0].getInfo('r'),ansi=ins[0].getInfo('i');
     for(i=1;i<nins;i++){
@@ -60,10 +83,10 @@ else if(!name.compare("sub")){
         ansi-=ins[i].getInfo('i');
     }
     out->setc(ansr,ansi,false);
-
-}//sub(rec(3,4),rec(2,2));  sub(pol(1.414213562373,45),pol(1.414213562373,45),rec(2,-5));
-else if(!name.compare("mult")){
-    if(nins==0){cout<<"ERRO:N�mero de argumentos imposs�vel!"<<endl;exit(-1);}
+}
+    
+else if(!name.compare("mult")){//Multiplica todos os números
+    if(nins==0){cout<<"ERRO:Número de argumentos impossível!"<<endl;exit(-1);}
     int i;
     double ansm=1,ansa=0;
     for(i=0;i<nins;i++){
@@ -71,18 +94,20 @@ else if(!name.compare("mult")){
         ansa+=ins[i].getInfo(false,false);
     }
     out->setc(ansm,ansa,true);
-//cout<<endl<<endl<<ins[0].getInfo(false,false)<<"    "<<ins[1].getInfo(false,false)<<"    "<<ansa;
 }
-else if(!name.compare("div")){
-    if(nins!=2){cout<<"ERRO:N�mero de argumentos incorreto!"<<endl;exit(-1);}
+    
+else if(!name.compare("div")){//Divide o primeiro pelo segundo
+    if(nins!=2){cout<<"ERRO:Número de argumentos incorreto!"<<endl;exit(-1);}
     out->setc(ins[0].getInfo('m')/ins[1].getInfo('m'),ins[0].getInfo('a')*180/M_PI-ins[1].getInfo('a')*180/M_PI,'p');
-}//div(rec(3,4),pol(5,45))
-else if(!name.compare("ele")){
-    if(nins!=2){cout<<"ERRO:N�mero de argumentos incorreto!"<<endl;exit(-1);}
+}
+    
+else if(!name.compare("ele")){//Eleva o número complexo pelo real
+    if(nins!=2){cout<<"ERRO:Número de argumentos incorreto!"<<endl;exit(-1);}
     out->setc(pow(ins[0].getInfo('m'),ins[1].getInfo('r')),ins[0].getInfo('a')*180/M_PI*ins[1].getInfo('r'),'p');
-}//ele(rec(3,4),2)
-else if(!name.compare("divt")){//tens�o,res q quer a queda, outras res
-    if(nins<3){cout<<"ERRO:N�mero de argumentos imposs�vel para a fun��o divt!"<<endl;exit(-1);}
+}
+    
+else if(!name.compare("divt")){//Faz divisor de tensão com tensão, resistência que quer saber e outras resistências
+    if(nins<3){cout<<"ERRO:Número de argumentos impossível para a função divt!"<<endl;exit(-1);}
 int i;
 ncompl ans;
 ans.setc(1,1,'r');
@@ -93,22 +118,24 @@ ans^=-1;
 ans*=ins[0];
 ans*=ins[1];
 out->setc(ans.getInfo('m'),ans.getInfo('a'),'p');
-
-}//divt(6,45,90)=2
-else if(!name.compare("divc")){
+}
+    
+else if(!name.compare("divc")){//Faz divisor de corrente com corrente, resistência que quer saber e outras resistências
 
 }
-else if(!name.compare("ser")){
-    if(nins==0){cout<<"ERRO:N�mero de argumentos imposs�vel!"<<endl;exit(-1);}
+    
+else if(!name.compare("ser")){//Soma os números todos
+    if(nins==0){cout<<"ERRO:Número de argumentos impossível!"<<endl;exit(-1);}
     int i;
     ncompl x;
     x.setc(-1,-1,'r');
     for(i=0;i<nins;i++)
     x+=ins[i];
 out->setc(x.getInfo('r')+1,x.getInfo('i')+1,'r');
-}//ser(rec(2,3),rec(3,4))
-else if(!name.compare("par")){
-    if(nins==0){cout<<"ERRO:N�mero de argumentos imposs�vel!"<<endl;exit(-1);}
+}
+    
+else if(!name.compare("par")){//Faz um paralelo dos números todos
+    if(nins==0){cout<<"ERRO:Número de argumentos impossível!"<<endl;exit(-1);}
     int i;
     ncompl x;
     ncompl arum;
@@ -120,17 +147,23 @@ else if(!name.compare("par")){
     x+=arum;
     x^=-1;
     out->setc(x.getInfo('m'),x.getInfo('a'),'p');
-}//par(rec(3,0),rec(0,4))
-else if(!name.compare("pol")){}
-else if(!name.compare("pol")){}
-else{cout<<"ERRO:Nome de fun��o Inv�lido!";exit(-1);}
 }
+    
+else if(!name.compare("pol")){}
+else if(!name.compare("pol")){}
+    
+else{cout<<"ERRO:Nome de função Inválido!";exit(-1);}
+}
+
+//Seta o nome
 func::setName(std::string nome){
     name=nome;
 }
+
+//Faz a super conversão setando os valores de todas as funções e conectando suas saídas com a entrada das outras!
 func::setvals(fescr main, int* hie, func* funcs, int gf,ncompl **listas, int ga, int ia,filanterior *f
               ){
-int i;//l=n�mero da lista
+int i;
 (*hie)++;
 
 cout<<"a"<<gf;
@@ -140,19 +173,17 @@ funcs[gf].hie=*hie;
 funcs[gf].name=main.getName();
 funcs[gf].out=new ncompl[1];
 
-for(i=0;i<main.getNarg();i++)//g= n�mero do in, i= n�mero do argumento da fun��o atual.
+for(i=0;i<main.getNarg();i++)
     if(!main.isfescr(main.getArgs()[i])){funcs[gf].ins[i].fromDouble(atof(main.getArgs()[i].c_str()));
     }
     else {funcs[gf].ins[i].fromDouble(-666);
     setvals(main.getArgs()[i],hie,funcs,(f->prox()),listas,gf,i,f);
     }
-//funcs[gf].ins=listas[gf];add(add(rec(10,0),rec(18,0),rec(245,0)),add(add(rec(-83,0),rec(584,0)),add(rec(32,0),rec(26,0),rec(19,0))),rec(31,0))
 if(ia!=-1&&ga!=-1)funcs[gf].out=&funcs[ga].ins[ia];
-//cout<<"gf="<<gf<<"  ga="<<ga<<"  ia="<<ia<<"  funcs[ga].ins[ia]="<<funcs[ga].ins[ia].getInfo(true,true)<<endl;
 (*hie)--;
 }
 
-
+//Converte a partir de uma fescr.
 func::fromFescr(fescr main){
     bool *lista=new bool[main.nfins(main.getStrb())];
     int i,hi=0,d,ia=-1,ga=-1,maxhie=1;
@@ -177,18 +208,12 @@ for(i=0;i<main.nfun(main.getStrb());i++)
 
 }
 
-//funcs[0].Magic();
-
-//cout<<" AaSDASD ";
-//add(rec(2,3),rec(3,2))
-
 for(i=0;i<main.nfun(main.getStrb());i++){
         cout<<funcs[i].getName()<<endl;
         cout<<funcs[i].getNins()<<endl;
         cout<<funcs[i].getHie()<<endl<<endl;
     for(d=0;d<funcs[i].getNins();d++)
     cout<<funcs[i].getIns()[d].getInfo(true,true)<<endl;
-    //cout<<funcs[i].out->getInfo(true,true)<<endl<<funcs[i].out->getInfo(true,false)<<endl<<endl;
 cout<<endl<<endl;
         }
 system("pause>>NULL");
@@ -196,6 +221,8 @@ system("cls");
 cout<<funcs[0].getOut().getInfo('m')<<endl<<funcs[0].getOut().getInfo('a')*180/M_PI;
 
 }
+
+//TESTES:
 //A(B(10,18,245),F(G(-83,584),J(32,26,19)),31)
 //add(add(rec(10,0),rec(18,0),rec(245,0)),add(add(rec(-83,0),rec(584,0)),add(rec(32,0),rec(26,0),rec(19,0))),rec(31,0))
 //add(rec(1,2),rec(3,4))
